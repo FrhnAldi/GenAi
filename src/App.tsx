@@ -14,7 +14,7 @@ function App() {
   return (
     <AuthProvider>
       <AppDataProvider>
-        <BrowserRouter>
+        <BrowserRouter basename="/GenAi">
           <Routes>
             <Route path="/" element={<HeroPage />} />
             <Route path="/tentang" element={<AboutPage />} />

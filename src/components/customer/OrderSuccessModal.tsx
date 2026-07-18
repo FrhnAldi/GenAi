@@ -172,6 +172,32 @@ export default function OrderSuccessModal({
             </div>
           )}
 
+          {paymentMethod === 'qris' && (
+            <div
+              className="flex flex-col items-center rounded-2xl px-4 py-5 mb-4"
+              style={{ backgroundColor: 'rgba(243,234,217,0.04)', border: '1px solid rgba(217,163,95,0.25)' }}
+            >
+              <p
+                className="text-[11px] font-medium uppercase tracking-[0.16em] mb-3"
+                style={{ color: MUTED, fontFamily: 'Inter, sans-serif' }}
+              >
+                Scan untuk Bayar
+              </p>
+              <div
+                className="rounded-xl p-2.5"
+                style={{ backgroundColor: '#FFFFFF', boxShadow: '0 0 24px rgba(217,163,95,0.15)' }}
+              >
+                <img src="/qris.png" alt="Kode QRIS" className="w-44 h-44 object-contain block" />
+              </div>
+              <p
+                className="text-[11px] mt-3 font-light text-center leading-relaxed"
+                style={{ color: MUTED, fontFamily: 'Inter, sans-serif' }}
+              >
+                Buka aplikasi e-wallet atau m-banking Anda, lalu scan kode di atas untuk menyelesaikan pembayaran.
+              </p>
+            </div>
+          )}
+
           {promoCode && discount > 0 && (
             <div
               className="flex items-center gap-1.5 rounded-lg px-3 py-2 mb-3"
@@ -224,8 +250,11 @@ export default function OrderSuccessModal({
             </span>
           </div>
 
+          // SESUDAH
           <p className="text-[11px] mb-4 font-light text-center" style={{ color: 'rgba(243,234,217,0.4)', fontFamily: 'Inter, sans-serif' }}>
-            Tunjukkan halaman ini ke kasir untuk konfirmasi pembayaran.
+            {paymentMethod === 'qris'
+              ? 'Setelah pembayaran QRIS berhasil, tunjukkan halaman ini ke kasir sebagai bukti.'
+              : 'Tunjukkan halaman ini ke kasir untuk konfirmasi pembayaran.'}
           </p>
 
           <button
