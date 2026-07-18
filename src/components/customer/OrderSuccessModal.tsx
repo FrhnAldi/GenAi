@@ -187,7 +187,11 @@ export default function OrderSuccessModal({
                 className="rounded-xl p-2.5"
                 style={{ backgroundColor: '#FFFFFF', boxShadow: '0 0 24px rgba(217,163,95,0.15)' }}
               >
-                <img src="/qris.png" alt="Kode QRIS" className="w-44 h-44 object-contain block" />
+                <img
+                  src={`${import.meta.env.BASE_URL}qris.png`}
+                  alt="Kode QRIS"
+                  className="w-44 h-44 object-contain block"
+                />
               </div>
               <p
                 className="text-[11px] mt-3 font-light text-center leading-relaxed"
