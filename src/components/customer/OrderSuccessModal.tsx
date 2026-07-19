@@ -114,7 +114,7 @@ export default function OrderSuccessModal({
   };
 
   return (
-    <div className="fixed inset-0 z-[60] flex items-center justify-center px-4 py-4 sm:py-6 overflow-y-auto">
+    <div className="fixed inset-0 z-[60] flex items-start justify-center px-4 py-4 sm:py-6 overflow-y-auto">
       <style>{`
         @keyframes os-pop {
           0% { transform: scale(0.92); opacity: 0; }
@@ -130,7 +130,7 @@ export default function OrderSuccessModal({
         }
       `}</style>
       <div
-        className="absolute inset-0"
+        className="fixed inset-0"
         style={{ backgroundColor: inkAlpha(0.75), backdropFilter: 'blur(6px)' }}
         onClick={onClose}
       />
