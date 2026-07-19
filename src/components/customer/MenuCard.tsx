@@ -2,12 +2,12 @@ import { Minus, Plus } from 'lucide-react';
 import type { Product } from '../../types/pos';
 import { formatIDR } from '../../data/products';
 import { BADGE_STYLE } from '../../data/badges';
+import { useTheme } from '../../context/ThemeContext';
 
 // Shared Basilico luxury palette (see CartDrawer / OrderSuccessModal / CustomerDashboard).
-const CREAM = '#F3EAD9';
+// GOLD/BURNT stay constant across themes; CREAM/BLACK now come from useTheme().
 const GOLD = '#D9A35F';
 const BURNT = '#C97A2B';
-const BLACK = '#070707';
 const GRADIENT = `linear-gradient(135deg, ${GOLD}, ${BURNT})`;
 
 interface Props {
@@ -19,6 +19,8 @@ interface Props {
 }
 
 export default function MenuCard({ product, quantity, onAdd, onIncrement, onDecrement }: Props) {
+  const { colors } = useTheme();
+  const { cream: CREAM, ink: BLACK, creamAlpha } = colors;
   const remaining = product.stock - quantity;
   const badgeStyle = product.badge ? BADGE_STYLE[product.badge] : null;
   const BadgeIcon = badgeStyle?.icon;
@@ -27,8 +29,8 @@ export default function MenuCard({ product, quantity, onAdd, onIncrement, onDecr
     <div
       className="group relative flex flex-col rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-1"
       style={{
-        backgroundColor: 'rgba(243,234,217,0.04)',
-        border: '1px solid rgba(243,234,217,0.1)',
+        backgroundColor: creamAlpha(0.04),
+        border: `1px solid ${creamAlpha(0.1)}`,
       }}
     >
       <div className="relative aspect-[4/3] w-full overflow-hidden">
@@ -56,7 +58,7 @@ export default function MenuCard({ product, quantity, onAdd, onIncrement, onDecr
         >
           {product.name}
         </p>
-        <p className="text-xs line-clamp-2 leading-snug font-light" style={{ color: 'rgba(243,234,217,0.5)' }}>
+        <p className="text-xs line-clamp-2 leading-snug font-light" style={{ color: creamAlpha(0.5) }}>
           {product.description}
         </p>
         <div className="mt-auto flex items-center justify-between pt-2.5">
@@ -77,24 +79,24 @@ export default function MenuCard({ product, quantity, onAdd, onIncrement, onDecr
             ) : (
               <div
                 className="flex items-center gap-1.5 rounded-full px-1 py-1"
-                style={{ backgroundColor: 'rgba(243,234,217,0.1)', border: '1px solid rgba(243,234,217,0.15)' }}
+                style={{ backgroundColor: creamAlpha(0.1), border: `1px solid ${creamAlpha(0.15)}` }}
               >
                 <button
                   onClick={() => onDecrement(product.id)}
                   className="w-6 h-6 rounded-full flex items-center justify-center transition-colors hover:bg-white/10"
-                  style={{ color: '#F3EAD9' }}
+                  style={{ color: CREAM }}
                   aria-label={`Kurangi ${product.name}`}
                 >
                   <Minus size={12} />
                 </button>
-                <span className="text-xs font-bold w-4 text-center" style={{ color: '#F3EAD9' }}>
+                <span className="text-xs font-bold w-4 text-center" style={{ color: CREAM }}>
                   {quantity}
                 </span>
                 <button
                   onClick={() => onIncrement(product.id)}
                   disabled={remaining <= 0}
                   className="w-6 h-6 rounded-full flex items-center justify-center transition-colors hover:bg-white/10 disabled:opacity-30"
-                  style={{ color: '#F3EAD9' }}
+                  style={{ color: CREAM }}
                   aria-label={`Tambah ${product.name}`}
                 >
                   <Plus size={12} />

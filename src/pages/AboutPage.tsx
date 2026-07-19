@@ -3,6 +3,7 @@ import { Award, ChefHat, Heart, Leaf, Quote, Sparkles, Users } from 'lucide-reac
 import PageHero from '../components/site/PageHero';
 import SiteFooter from '../components/site/SiteFooter';
 import GlobalStyles from '../components/site/GlobalStyles';
+import { useTheme } from '../context/ThemeContext';
 
 const VALUES = [
   {
@@ -58,6 +59,7 @@ const TEAM = [
 
 export default function AboutPage() {
   const [activeTimeline, setActiveTimeline] = useState(0);
+  const { colors } = useTheme();
 
   useEffect(() => {
     const id = setInterval(() => setActiveTimeline((p) => (p + 1) % TIMELINE.length), 3200);
@@ -76,12 +78,12 @@ export default function AboutPage() {
       />
 
       {/* ================= STORY ================= */}
-      <section className="relative px-5 sm:px-8 lg:px-10 py-16 sm:py-20 lg:py-24" style={{ backgroundColor: '#15100C' }}>
+      <section className="relative px-5 sm:px-8 lg:px-10 py-16 sm:py-20 lg:py-24" style={{ backgroundColor: colors.ink }}>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
           <div className="animate-slide-left">
             <p
               className="uppercase text-xs sm:text-sm mb-4"
-              style={{ color: '#D9A441', letterSpacing: '0.2em', fontFamily: 'Inter, sans-serif' }}
+              style={{ color: colors.accent, letterSpacing: '0.2em', fontFamily: 'Inter, sans-serif' }}
             >
               Cerita Kami
             </p>
@@ -92,7 +94,7 @@ export default function AboutPage() {
                 fontSize: 'clamp(28px, 4vw, 44px)',
                 lineHeight: 1.1,
                 letterSpacing: '-0.04em',
-                color: '#F3EAD9',
+                color: colors.cream,
               }}
             >
               Dari dapur rumah ke meja makan ribuan keluarga
@@ -100,7 +102,7 @@ export default function AboutPage() {
             <p
               className="mt-5"
               style={{
-                color: 'rgba(243,234,217,0.7)',
+                color: colors.creamAlpha(0.7),
                 fontSize: 16,
                 lineHeight: 1.7,
                 letterSpacing: '-0.01em',
@@ -114,8 +116,8 @@ export default function AboutPage() {
               className="mt-8 flex items-start gap-4 rounded-2xl p-5"
               style={{ backgroundColor: 'rgba(217,164,65,0.08)', border: '1px solid rgba(217,164,65,0.2)' }}
             >
-              <Quote size={28} color="#D9A441" className="flex-shrink-0" />
-              <p style={{ color: 'rgba(243,234,217,0.85)', fontSize: 15, lineHeight: 1.6, fontStyle: 'italic' }}>
+              <Quote size={28} color={colors.accent} className="flex-shrink-0" />
+              <p style={{ color: colors.creamAlpha(0.85), fontSize: 15, lineHeight: 1.6, fontStyle: 'italic' }}>
                 "Kami percaya makanan terbaik adalah yang mengingatkan kita pada rumah."
               </p>
             </div>
@@ -126,16 +128,16 @@ export default function AboutPage() {
               src="https://images.unsplash.com/photo-1466637574441-749b8f19452f?w=900&h=1100&fit=crop&auto=format"
               alt="Dapur RasaNusa"
               className="w-full rounded-3xl object-cover"
-              style={{ height: 'clamp(320px, 42vw, 520px)', border: '1px solid rgba(243,234,217,0.12)' }}
+              style={{ height: 'clamp(320px, 42vw, 520px)', border: `1px solid ${colors.creamAlpha(0.12)}` }}
             />
             <div
               className="absolute -bottom-6 -left-6 sm:-bottom-8 sm:-left-8 rounded-2xl px-5 py-4 sm:px-6 sm:py-5"
-              style={{ backgroundColor: '#F3EAD9', boxShadow: '0 20px 50px -15px rgba(0,0,0,0.5)' }}
+              style={{ backgroundColor: colors.cream, boxShadow: '0 20px 50px -15px rgba(0,0,0,0.5)' }}
             >
-              <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: 32, letterSpacing: '-0.04em', color: '#15100C' }}>
+              <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: 32, letterSpacing: '-0.04em', color: colors.ink }}>
                 12+
               </p>
-              <p style={{ fontSize: 12, color: 'rgba(21,16,12,0.6)' }}>Tahun melayani nusantara</p>
+              <p style={{ fontSize: 12, color: colors.inkAlpha(0.6) }}>Tahun melayani nusantara</p>
             </div>
           </div>
         </div>
@@ -188,10 +190,10 @@ export default function AboutPage() {
       </section>
 
       {/* ================= TIMELINE ================= */}
-      <section className="relative px-5 sm:px-8 lg:px-10 py-16 sm:py-20 lg:py-24" style={{ backgroundColor: '#15100C' }}>
+      <section className="relative px-5 sm:px-8 lg:px-10 py-16 sm:py-20 lg:py-24" style={{ backgroundColor: colors.ink }}>
         <p
           className="uppercase text-xs sm:text-sm mb-3 animate-fade-up"
-          style={{ color: '#D9A441', letterSpacing: '0.2em', fontFamily: 'Inter, sans-serif' }}
+          style={{ color: colors.accent, letterSpacing: '0.2em', fontFamily: 'Inter, sans-serif' }}
         >
           Perjalanan Kami
         </p>
@@ -203,7 +205,7 @@ export default function AboutPage() {
             fontSize: 'clamp(28px, 4vw, 42px)',
             lineHeight: 1.1,
             letterSpacing: '-0.04em',
-            color: '#F3EAD9',
+            color: colors.cream,
           }}
         >
           Dari warung kecil menjadi rumah rasa nusantara
@@ -216,11 +218,11 @@ export default function AboutPage() {
               onClick={() => setActiveTimeline(i)}
               className="text-left rounded-xl p-4 transition-all duration-300"
               style={{
-                backgroundColor: i === activeTimeline ? 'rgba(217,164,65,0.14)' : 'rgba(243,234,217,0.04)',
-                border: `1px solid ${i === activeTimeline ? '#D9A441' : 'rgba(243,234,217,0.1)'}`,
+                backgroundColor: i === activeTimeline ? 'rgba(217,164,65,0.14)' : colors.creamAlpha(0.04),
+                border: `1px solid ${i === activeTimeline ? colors.accent : colors.creamAlpha(0.1)}`,
               }}
             >
-              <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: 22, color: i === activeTimeline ? '#D9A441' : '#F3EAD9', letterSpacing: '-0.03em' }}>
+              <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: 22, color: i === activeTimeline ? colors.accent : colors.cream, letterSpacing: '-0.03em' }}>
                 {t.year}
               </p>
             </button>
@@ -229,12 +231,12 @@ export default function AboutPage() {
 
         <div
           className="relative rounded-2xl p-6 sm:p-8 min-h-[140px] flex flex-col justify-center animate-fade-up"
-          style={{ backgroundColor: 'rgba(243,234,217,0.04)', border: '1px solid rgba(243,234,217,0.1)' }}
+          style={{ backgroundColor: colors.creamAlpha(0.04), border: `1px solid ${colors.creamAlpha(0.1)}` }}
         >
-          <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: 24, color: '#F3EAD9', letterSpacing: '-0.03em', marginBottom: 8 }}>
+          <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: 24, color: colors.cream, letterSpacing: '-0.03em', marginBottom: 8 }}>
             {TIMELINE[activeTimeline].title}
           </p>
-          <p style={{ color: 'rgba(243,234,217,0.65)', fontSize: 15, lineHeight: 1.6, maxWidth: 520 }}>
+          <p style={{ color: colors.creamAlpha(0.65), fontSize: 15, lineHeight: 1.6, maxWidth: 520 }}>
             {TIMELINE[activeTimeline].text}
           </p>
         </div>
@@ -282,18 +284,18 @@ export default function AboutPage() {
       </section>
 
       {/* ================= AWARD STRIP ================= */}
-      <section className="relative px-5 sm:px-8 lg:px-10 py-10 sm:py-12" style={{ backgroundColor: '#15100C' }}>
+      <section className="relative px-5 sm:px-8 lg:px-10 py-10 sm:py-12" style={{ backgroundColor: colors.ink }}>
         <div className="flex flex-wrap items-center justify-center gap-8 sm:gap-14 animate-fade-up">
-          <div className="flex items-center gap-2" style={{ color: 'rgba(243,234,217,0.6)' }}>
-            <Award size={18} color="#D9A441" />
+          <div className="flex items-center gap-2" style={{ color: colors.creamAlpha(0.6) }}>
+            <Award size={18} color={colors.accent} />
             <span className="text-sm">Best Local Eatery 2024</span>
           </div>
-          <div className="flex items-center gap-2" style={{ color: 'rgba(243,234,217,0.6)' }}>
-            <Award size={18} color="#D9A441" />
+          <div className="flex items-center gap-2" style={{ color: colors.creamAlpha(0.6) }}>
+            <Award size={18} color={colors.accent} />
             <span className="text-sm">Top Rated Nusantara Food 2025</span>
           </div>
-          <div className="flex items-center gap-2" style={{ color: 'rgba(243,234,217,0.6)' }}>
-            <Award size={18} color="#D9A441" />
+          <div className="flex items-center gap-2" style={{ color: colors.creamAlpha(0.6) }}>
+            <Award size={18} color={colors.accent} />
             <span className="text-sm">Halal &amp; Higienis Bersertifikat</span>
           </div>
         </div>

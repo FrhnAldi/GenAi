@@ -7,6 +7,7 @@ import GlobalStyles from '../components/site/GlobalStyles';
 import { CATEGORY_LABELS, formatIDR, INITIAL_PRODUCTS } from '../data/products';
 import { BADGE_STYLE } from '../data/badges';
 import { useAuth } from '../context/AuthContext';
+import { useTheme } from '../context/ThemeContext';
 import type { Category } from '../types/pos';
 
 const CATEGORIES: (Category | 'semua')[] = ['semua', 'makanan', 'camilan', 'minuman', 'dessert'];
@@ -14,6 +15,7 @@ const CATEGORIES: (Category | 'semua')[] = ['semua', 'makanan', 'camilan', 'minu
 export default function MenuPage() {
   const [activeCategory, setActiveCategory] = useState<Category | 'semua'>('semua');
   const { user } = useAuth();
+  const { colors } = useTheme();
   const navigate = useNavigate();
 
   const handleOrderClick = () => {
@@ -44,7 +46,7 @@ export default function MenuPage() {
       />
 
       {/* ================= FILTER + GRID ================= */}
-      <section className="relative px-5 sm:px-8 lg:px-10 py-14 sm:py-16 lg:py-20" style={{ backgroundColor: '#15100C' }}>
+      <section className="relative px-5 sm:px-8 lg:px-10 py-14 sm:py-16 lg:py-20" style={{ backgroundColor: colors.ink }}>
         {/* category filter */}
         <div className="flex flex-wrap gap-3 mb-10 sm:mb-12 animate-fade-up">
           {CATEGORIES.map((cat) => {
@@ -57,9 +59,9 @@ export default function MenuPage() {
                 style={{
                   fontFamily: 'Inter, sans-serif',
                   fontWeight: 500,
-                  backgroundColor: active ? '#D9A441' : 'rgba(243,234,217,0.06)',
-                  color: active ? '#15100C' : 'rgba(243,234,217,0.75)',
-                  border: `1px solid ${active ? '#D9A441' : 'rgba(243,234,217,0.15)'}`,
+                  backgroundColor: active ? colors.accent : colors.creamAlpha(0.06),
+                  color: active ? colors.ink : colors.creamAlpha(0.75),
+                  border: `1px solid ${active ? colors.accent : colors.creamAlpha(0.15)}`,
                 }}
               >
                 {CATEGORY_LABELS[cat]}
@@ -79,8 +81,8 @@ export default function MenuPage() {
                 key={product.id}
                 className="group rounded-2xl overflow-hidden relative animate-fade-up transition-transform hover:-translate-y-1.5"
                 style={{
-                  backgroundColor: 'rgba(243,234,217,0.04)',
-                  border: '1px solid rgba(243,234,217,0.1)',
+                  backgroundColor: colors.creamAlpha(0.04),
+                  border: `1px solid ${colors.creamAlpha(0.1)}`,
                   animationDelay: `${0.05 * (i % 6)}s`,
                 }}
               >
@@ -105,7 +107,7 @@ export default function MenuPage() {
                     style={{
                       fontFamily: 'DM Sans, sans-serif',
                       fontSize: 18,
-                      color: '#F3EAD9',
+                      color: colors.cream,
                       letterSpacing: '-0.02em',
                       lineHeight: 1.2,
                     }}
@@ -114,12 +116,12 @@ export default function MenuPage() {
                   </p>
                   <p
                     className="mt-1.5 line-clamp-2"
-                    style={{ fontSize: 13, color: 'rgba(243,234,217,0.55)', lineHeight: 1.5 }}
+                    style={{ fontSize: 13, color: colors.creamAlpha(0.55), lineHeight: 1.5 }}
                   >
                     {product.description}
                   </p>
                   <div className="flex items-center justify-between mt-4">
-                    <span style={{ color: '#D9A441', fontFamily: 'Inter, sans-serif', fontWeight: 600, fontSize: 16 }}>
+                    <span style={{ color: colors.accent, fontFamily: 'Inter, sans-serif', fontWeight: 600, fontSize: 16 }}>
                       {formatIDR(product.price)}
                     </span>
                     <button
@@ -127,7 +129,7 @@ export default function MenuPage() {
                       onClick={handleOrderClick}
                       aria-label={`Pesan ${product.name}`}
                       className="w-9 h-9 rounded-full flex items-center justify-center transition-transform duration-300 hover:scale-110"
-                      style={{ backgroundColor: 'rgba(217,164,65,0.14)', color: '#D9A441' }}
+                      style={{ backgroundColor: 'rgba(217,164,65,0.14)', color: colors.accent }}
                     >
                       <ShoppingBag size={15} />
                     </button>
@@ -139,7 +141,7 @@ export default function MenuPage() {
         </div>
 
         {filtered.length === 0 && (
-          <p className="text-center py-16" style={{ color: 'rgba(243,234,217,0.5)' }}>
+          <p className="text-center py-16" style={{ color: colors.creamAlpha(0.5) }}>
             Belum ada menu pada kategori ini.
           </p>
         )}

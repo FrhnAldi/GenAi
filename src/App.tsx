@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { AppDataProvider } from './context/AppDataContext';
+import { ThemeProvider } from './context/ThemeContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import HeroPage from './pages/HeroPage';
 import LoginPage from './pages/LoginPage';
@@ -12,9 +13,10 @@ import CustomerDashboard from './pages/CustomerDashboard';
 
 function App() {
   return (
-    <AuthProvider>
-      <AppDataProvider>
-        <BrowserRouter basename="/GenAi">
+    <ThemeProvider>
+      <AuthProvider>
+        <AppDataProvider>
+          <BrowserRouter basename="/GenAi">
           <Routes>
             <Route path="/" element={<HeroPage />} />
             <Route path="/tentang" element={<AboutPage />} />
@@ -38,9 +40,10 @@ function App() {
               }
             />
           </Routes>
-        </BrowserRouter>
-      </AppDataProvider>
-    </AuthProvider>
+          </BrowserRouter>
+        </AppDataProvider>
+      </AuthProvider>
+    </ThemeProvider>
   );
 }
 

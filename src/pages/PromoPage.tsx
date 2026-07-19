@@ -4,6 +4,7 @@ import PageHero from '../components/site/PageHero';
 import SiteFooter from '../components/site/SiteFooter';
 import GlobalStyles from '../components/site/GlobalStyles';
 import { PROMOS } from '../data/promos';
+import { useTheme } from '../context/ThemeContext';
 
 function getNextFriday22() {
   const now = new Date();
@@ -35,6 +36,7 @@ function useCountdown() {
 export default function PromoPage() {
   const { days, hours, minutes, seconds } = useCountdown();
   const [copiedCode, setCopiedCode] = useState<string | null>(null);
+  const { colors } = useTheme();
 
   const handleCopy = (code: string) => {
     if (typeof navigator !== 'undefined' && navigator.clipboard) {
@@ -105,10 +107,10 @@ export default function PromoPage() {
       </section>
 
       {/* ================= PROMO GRID ================= */}
-      <section className="relative px-5 sm:px-8 lg:px-10 py-16 sm:py-20" style={{ backgroundColor: '#15100C' }}>
+      <section className="relative px-5 sm:px-8 lg:px-10 py-16 sm:py-20" style={{ backgroundColor: colors.ink }}>
         <div className="flex items-center gap-2 mb-3 animate-fade-up">
-          <Tag size={18} color="#D9A441" />
-          <span className="uppercase text-xs sm:text-sm" style={{ color: '#D9A441', letterSpacing: '0.2em' }}>
+          <Tag size={18} color={colors.accent} />
+          <span className="uppercase text-xs sm:text-sm" style={{ color: colors.accent, letterSpacing: '0.2em' }}>
             Semua Promo
           </span>
         </div>
@@ -120,7 +122,7 @@ export default function PromoPage() {
             fontSize: 'clamp(28px, 4vw, 42px)',
             lineHeight: 1.1,
             letterSpacing: '-0.04em',
-            color: '#F3EAD9',
+            color: colors.cream,
           }}
         >
           Pilih promo favoritmu dan tunjukkan kode ke kasir kami
@@ -135,8 +137,8 @@ export default function PromoPage() {
                 key={promo.id}
                 className="group rounded-2xl overflow-hidden flex flex-col sm:flex-row animate-fade-up transition-transform hover:-translate-y-1"
                 style={{
-                  backgroundColor: 'rgba(243,234,217,0.04)',
-                  border: '1px solid rgba(243,234,217,0.1)',
+                  backgroundColor: colors.creamAlpha(0.04),
+                  border: `1px solid ${colors.creamAlpha(0.1)}`,
                   animationDelay: `${0.1 * i}s`,
                 }}
               >
@@ -164,14 +166,14 @@ export default function PromoPage() {
                       style={{
                         fontFamily: 'DM Sans, sans-serif',
                         fontSize: 20,
-                        color: '#F3EAD9',
+                        color: colors.cream,
                         letterSpacing: '-0.02em',
                         lineHeight: 1.2,
                       }}
                     >
                       {promo.title}
                     </p>
-                    <p className="mt-2" style={{ fontSize: 13.5, color: 'rgba(243,234,217,0.6)', lineHeight: 1.55 }}>
+                    <p className="mt-2" style={{ fontSize: 13.5, color: colors.creamAlpha(0.6), lineHeight: 1.55 }}>
                       {promo.description}
                     </p>
                   </div>

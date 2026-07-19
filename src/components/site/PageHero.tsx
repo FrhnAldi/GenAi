@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import SiteNavbar from './SiteNavbar';
+import { useTheme } from '../../context/ThemeContext';
 
 function Word({ children, delay }: { children: ReactNode; delay: string }) {
   return (
@@ -28,6 +29,8 @@ export default function PageHero({
   subtitle: string;
   bgImage: string;
 }) {
+  const { colors } = useTheme();
+
   return (
     <div className="relative overflow-hidden">
       <div
@@ -42,8 +45,7 @@ export default function PageHero({
       <div
         className="absolute inset-0"
         style={{
-          background:
-            'linear-gradient(180deg, rgba(21,16,12,0.90) 0%, rgba(21,16,12,0.78) 45%, #15100C 100%)',
+          background: `linear-gradient(180deg, ${colors.inkAlpha(0.90)} 0%, ${colors.inkAlpha(0.78)} 45%, ${colors.ink} 100%)`,
         }}
       />
       <div
@@ -63,7 +65,7 @@ export default function PageHero({
         <div className="px-5 sm:px-8 lg:px-10 pt-8 pb-16 sm:pt-12 sm:pb-20 lg:pt-16 lg:pb-24">
           <p
             className="uppercase text-xs sm:text-sm mb-4 animate-fade-up"
-            style={{ color: '#D9A441', letterSpacing: '0.2em', fontFamily: 'Inter, sans-serif' }}
+            style={{ color: colors.accent, letterSpacing: '0.2em', fontFamily: 'Inter, sans-serif' }}
           >
             {eyebrow}
           </p>
@@ -72,7 +74,7 @@ export default function PageHero({
               fontFamily: 'DM Sans, sans-serif',
               fontWeight: 400,
               letterSpacing: '-0.04em',
-              color: '#F3EAD9',
+              color: colors.cream,
               fontSize: 'clamp(38px, 8vw, 84px)',
               lineHeight: 1.05,
             }}
@@ -86,7 +88,7 @@ export default function PageHero({
           <p
             className="max-w-lg mt-5 sm:mt-6 animate-fade-up delay-600"
             style={{
-              color: 'rgba(243,234,217,0.7)',
+              color: colors.creamAlpha(0.7),
               fontFamily: 'Inter, sans-serif',
               fontSize: 'clamp(14px, 1.6vw, 18px)',
               lineHeight: 1.55,

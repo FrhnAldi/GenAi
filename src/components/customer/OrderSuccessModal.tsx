@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { CheckCircle2, Clock3, MessageSquareText, Tag } from 'lucide-react';
 import { formatIDR } from '../../data/products';
+import { useTheme } from '../../context/ThemeContext';
 
 interface ReviewItem {
   name: string;
@@ -23,8 +24,7 @@ interface Props {
   onClose: () => void;
 }
 
-const CREAM = '#F3EAD9';
-const MUTED = 'rgba(243,234,217,0.55)';
+// GOLD/BURNT stay constant across themes; CREAM/MUTED come from useTheme().
 const GOLD = '#D9A35F';
 const BURNT = '#C97A2B';
 const GRADIENT = `linear-gradient(135deg, ${GOLD}, ${BURNT})`;
@@ -57,6 +57,9 @@ export default function OrderSuccessModal({
   paymentMethod,
   onClose,
 }: Props) {
+  const { colors } = useTheme();
+  const { ink: BLACK, cream: CREAM, creamAlpha, inkAlpha } = colors;
+  const MUTED = creamAlpha(0.55);
   const [secondsLeft, setSecondsLeft] = useState(QRIS_DURATION_SECONDS);
 
   useEffect(() => {
@@ -89,14 +92,14 @@ export default function OrderSuccessModal({
       `}</style>
       <div
         className="absolute inset-0"
-        style={{ backgroundColor: 'rgba(4,4,4,0.75)', backdropFilter: 'blur(6px)' }}
+        style={{ backgroundColor: inkAlpha(0.75), backdropFilter: 'blur(6px)' }}
         onClick={onClose}
       />
       <div
         className="relative overflow-hidden rounded-3xl w-full max-w-md flex flex-col"
         style={{
           animation: 'os-pop 450ms cubic-bezier(0.22, 1, 0.36, 1)',
-          backgroundColor: 'rgba(7,7,7,0.92)',
+          backgroundColor: inkAlpha(0.92),
           backdropFilter: 'blur(20px)',
           border: '1px solid rgba(217,163,95,0.28)',
           boxShadow: '0 30px 70px -20px rgba(0,0,0,0.65), 0 0 40px rgba(217,163,95,0.1)',
@@ -136,7 +139,7 @@ export default function OrderSuccessModal({
           >
             <Clock3 size={11} /> Menunggu Konfirmasi
           </span>
-          <p className="text-[11px] mt-2 font-light" style={{ color: 'rgba(243,234,217,0.4)', fontFamily: 'Inter, sans-serif' }}>
+          <p className="text-[11px] mt-2 font-light" style={{ color: creamAlpha(0.4), fontFamily: 'Inter, sans-serif' }}>
             Pantau perkembangan status pesanan Anda secara real-time di bagian Riwayat Pesanan.
           </p>
         </div>
@@ -160,7 +163,7 @@ export default function OrderSuccessModal({
               <li
                 key={`${item.name}-${idx}`}
                 className="rounded-xl px-3.5 py-2.5"
-                style={{ backgroundColor: 'rgba(243,234,217,0.04)', border: '1px solid rgba(243,234,217,0.08)' }}
+                style={{ backgroundColor: creamAlpha(0.04), border: `1px solid ${creamAlpha(0.08)}` }}
               >
                 <div className="flex items-center justify-between gap-3">
                   <div className="min-w-0 flex items-center gap-2">
@@ -181,7 +184,7 @@ export default function OrderSuccessModal({
                 {item.note && (
                   <div className="flex items-start gap-1.5 mt-1.5 pl-7">
                     <MessageSquareText size={11} className="flex-shrink-0 mt-0.5" style={{ color: GOLD, opacity: 0.8 }} />
-                    <span className="text-[11px] font-light italic" style={{ color: 'rgba(243,234,217,0.55)', fontFamily: 'Inter, sans-serif' }}>
+                    <span className="text-[11px] font-light italic" style={{ color: creamAlpha(0.55), fontFamily: 'Inter, sans-serif' }}>
                       {item.note}
                     </span>
                   </div>
@@ -195,7 +198,7 @@ export default function OrderSuccessModal({
               {orderType && (
                 <span
                   className="text-[11px] font-medium px-2.5 py-1 rounded-full"
-                  style={{ backgroundColor: 'rgba(243,234,217,0.06)', color: MUTED }}
+                  style={{ backgroundColor: creamAlpha(0.06), color: MUTED }}
                 >
                   {orderType === 'dine-in' ? 'Makan di Tempat' : 'Bawa Pulang'}
                 </span>
@@ -203,7 +206,7 @@ export default function OrderSuccessModal({
               {tableNumber && (
                 <span
                   className="text-[11px] font-medium px-2.5 py-1 rounded-full"
-                  style={{ backgroundColor: 'rgba(243,234,217,0.06)', color: MUTED }}
+                  style={{ backgroundColor: creamAlpha(0.06), color: MUTED }}
                 >
                   Meja {tableNumber}
                 </span>
@@ -211,7 +214,7 @@ export default function OrderSuccessModal({
               {paymentMethod && (
                 <span
                   className="text-[11px] font-medium px-2.5 py-1 rounded-full"
-                  style={{ backgroundColor: 'rgba(243,234,217,0.06)', color: MUTED }}
+                  style={{ backgroundColor: creamAlpha(0.06), color: MUTED }}
                 >
                   {PAYMENT_LABELS[paymentMethod] ?? paymentMethod}
                 </span>
@@ -223,7 +226,7 @@ export default function OrderSuccessModal({
             <div
               className="flex flex-col items-center rounded-2xl px-4 py-5 mb-4"
               style={{
-                backgroundColor: 'rgba(243,234,217,0.04)',
+                backgroundColor: creamAlpha(0.04),
                 border: `1px solid ${qrisExpired ? 'rgba(196,67,43,0.35)' : 'rgba(217,163,95,0.25)'}`,
               }}
             >
@@ -259,7 +262,7 @@ export default function OrderSuccessModal({
               </div>
               <div
                 className="w-full max-w-[176px] h-1 rounded-full mt-2.5 overflow-hidden"
-                style={{ backgroundColor: 'rgba(243,234,217,0.1)' }}
+                style={{ backgroundColor: creamAlpha(0.1) }}
               >
                 <div
                   className="h-full rounded-full transition-all duration-1000 ease-linear"
@@ -312,10 +315,10 @@ export default function OrderSuccessModal({
         </div>
 
         {/* Footer total + CTA */}
-        <div className="relative px-6 pt-4 pb-6 flex-shrink-0" style={{ borderTop: '1px solid rgba(243,234,217,0.08)' }}>
+        <div className="relative px-6 pt-4 pb-6 flex-shrink-0" style={{ borderTop: `1px solid ${creamAlpha(0.08)}` }}>
           <div
             className="w-full rounded-2xl px-4 py-3.5 flex items-center justify-between mb-4"
-            style={{ backgroundColor: 'rgba(243,234,217,0.04)', border: '1px solid rgba(243,234,217,0.1)', backdropFilter: 'blur(6px)' }}
+            style={{ backgroundColor: creamAlpha(0.04), border: `1px solid ${creamAlpha(0.1)}`, backdropFilter: 'blur(6px)' }}
           >
             <span className="text-xs font-light" style={{ color: MUTED, fontFamily: 'Inter, sans-serif' }}>
               Total Pembayaran
@@ -333,7 +336,7 @@ export default function OrderSuccessModal({
             </span>
           </div>
 
-          <p className="text-[11px] mb-4 font-light text-center" style={{ color: 'rgba(243,234,217,0.4)', fontFamily: 'Inter, sans-serif' }}>
+          <p className="text-[11px] mb-4 font-light text-center" style={{ color: creamAlpha(0.4), fontFamily: 'Inter, sans-serif' }}>
             {qrisExpired
               ? 'Kode QRIS kedaluwarsa — tunjukkan halaman ini ke kasir untuk membuat ulang pembayaran.'
               : paymentMethod === 'qris'
@@ -344,7 +347,7 @@ export default function OrderSuccessModal({
           <button
             onClick={onClose}
             className="w-full font-semibold py-3.5 rounded-xl transition-all duration-500 hover:scale-[1.015]"
-            style={{ background: GRADIENT, color: '#070707', boxShadow: '0 8px 30px -8px rgba(217,163,95,0.45)' }}
+            style={{ background: GRADIENT, color: BLACK, boxShadow: '0 8px 30px -8px rgba(217,163,95,0.45)' }}
           >
             Selesai
           </button>

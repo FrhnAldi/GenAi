@@ -20,6 +20,7 @@ import {
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useAppData } from '../context/AppDataContext';
+import { useTheme } from '../context/ThemeContext';
 import { CATEGORY_LABELS, formatIDR } from '../data/products';
 import { PROMOS } from '../data/promos';
 import { checkPromoEligibility } from '../lib/promoEngine';
@@ -30,6 +31,7 @@ import PromoCarousel from '../components/customer/PromoCarousel';
 import CartDrawer from '../components/customer/CartDrawer';
 import OrderSuccessModal from '../components/customer/OrderSuccessModal';
 import GlobalStyles from '../components/site/GlobalStyles';
+import ThemeToggle from '../components/site/ThemeToggle';
 
 const TABS: (Category | 'semua')[] = ['semua', 'makanan', 'camilan', 'minuman', 'dessert'];
 
@@ -41,10 +43,9 @@ const PAYMENT_LABELS: Record<PaymentMethod, string> = {
 };
 
 // Basilico luxury design system — shared with CartDrawer & OrderSuccessModal:
-// near-black stage, dual gold / burnt-orange accent, warm cream & gray text,
-// Playfair Display for headings, Inter (light) for body copy.
-const BLACK = '#070707';
-const CREAM = '#F3EAD9';
+// near-black stage (dark) / near-white stage (light), dual gold / burnt-orange
+// accent, warm cream & gray text, Playfair Display for headings, Inter (light)
+// for body copy. BLACK/CREAM below now come from useTheme() (see component body).
 const GOLD = '#D9A35F';
 const BURNT = '#C97A2B';
 const GRADIENT = `linear-gradient(135deg, ${GOLD}, ${BURNT})`;
@@ -61,6 +62,8 @@ function tierFromOrders(orderCount: number) {
 export default function CustomerDashboard() {
   const { user, logout } = useAuth();
   const { products, transactions, recordTransaction, removeTransaction } = useAppData();
+  const { colors } = useTheme();
+  const { ink: BLACK, cream: CREAM, creamAlpha, inkAlpha } = colors;
   const navigate = useNavigate();
 
   const [cart, setCart] = useState<Record<string, { quantity: number; note: string }>>({});
@@ -297,9 +300,9 @@ export default function CustomerDashboard() {
       <header
         className="sticky top-0 z-30"
         style={{
-          backgroundColor: 'rgba(7,7,7,0.85)',
+          backgroundColor: inkAlpha(0.85),
           backdropFilter: 'blur(12px)',
-          borderBottom: '1px solid rgba(243,234,217,0.08)',
+          borderBottom: `1px solid ${creamAlpha(0.08)}`,
         }}
       >
         <div className="max-w-6xl mx-auto flex items-center gap-3 sm:gap-4 px-4 sm:px-6 py-3.5 sm:py-4">
@@ -310,17 +313,18 @@ export default function CustomerDashboard() {
           >
             RasaNusa
           </Link>
-          <div className="h-5 w-px hidden sm:block" style={{ backgroundColor: 'rgba(243,234,217,0.15)' }} />
-          <h1 className="text-sm sm:text-base font-light" style={{ color: 'rgba(243,234,217,0.85)' }}>
+          <div className="h-5 w-px hidden sm:block" style={{ backgroundColor: creamAlpha(0.15) }} />
+          <h1 className="text-sm sm:text-base font-light" style={{ color: creamAlpha(0.85) }}>
             Halo, <span style={{ color: GOLD, fontWeight: 600 }}>{firstName}</span>
           </h1>
 
           <div className="ml-auto flex items-center gap-2 sm:gap-3">
+            <ThemeToggle />
             <button
               onClick={() => setIsCartOpen(true)}
               className="relative flex items-center gap-1.5 text-xs font-medium px-3 py-2 rounded-full transition-all duration-300 hover:border-[#D9A35F]/60"
               style={{
-                color: 'rgba(243,234,217,0.85)',
+                color: creamAlpha(0.85),
                 border: '1px solid rgba(217,163,95,0.22)',
                 backgroundColor: 'rgba(217,163,95,0.05)',
                 backdropFilter: 'blur(8px)',
@@ -365,7 +369,7 @@ export default function CustomerDashboard() {
             className="absolute inset-0"
             style={{
               background:
-                'linear-gradient(100deg, rgba(7,7,7,0.94) 38%, rgba(7,7,7,0.75) 68%, rgba(7,7,7,0.5) 100%), radial-gradient(120% 140% at 100% 100%, rgba(7,7,7,0) 0%, rgba(7,7,7,0.55) 100%)',
+                `linear-gradient(100deg, ${inkAlpha(0.94)} 38%, ${inkAlpha(0.75)} 68%, ${inkAlpha(0.5)} 100%), radial-gradient(120% 140% at 100% 100%, ${inkAlpha(0)} 0%, ${inkAlpha(0.55)} 100%)`,
             }}
           />
           <style>{`
@@ -437,7 +441,7 @@ export default function CustomerDashboard() {
                   {firstName}
                 </span>
               </h2>
-              <p className="text-sm mt-3 max-w-md font-light leading-relaxed" style={{ color: 'rgba(243,234,217,0.6)' }}>
+              <p className="text-sm mt-3 max-w-md font-light leading-relaxed" style={{ color: creamAlpha(0.6) }}>
                 Pesan menu favoritmu langsung dari sini, kumpulkan poin, dan nikmati promo spesial
                 untuk anggota RasaNusa.
               </p>
@@ -453,7 +457,7 @@ export default function CustomerDashboard() {
                 <div
                   className="inline-flex items-center gap-3 rounded-full pl-2 pr-4 py-1.5"
                   style={{
-                    backgroundColor: 'rgba(243,234,217,0.05)',
+                    backgroundColor: creamAlpha(0.05),
                     border: '1px solid rgba(217,163,95,0.25)',
                     backdropFilter: 'blur(10px)',
                   }}
@@ -489,12 +493,12 @@ export default function CustomerDashboard() {
                 />
                 <div
                   className="absolute inset-0"
-                  style={{ background: 'linear-gradient(180deg, rgba(7,7,7,0) 40%, rgba(7,7,7,0.85) 100%)' }}
+                  style={{ background: `linear-gradient(180deg, ${inkAlpha(0)} 40%, ${inkAlpha(0.85)} 100%)` }}
                 />
                 <div
                   className="absolute top-3 left-3 flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-wide px-2.5 py-1.5 rounded-full"
                   style={{
-                    backgroundColor: 'rgba(7,7,7,0.55)',
+                    backgroundColor: inkAlpha(0.55),
                     border: '1px solid rgba(217,163,95,0.35)',
                     backdropFilter: 'blur(8px)',
                     color: GOLD,
@@ -506,8 +510,8 @@ export default function CustomerDashboard() {
                   <p
                     className="rounded-xl px-3.5 py-2.5"
                     style={{
-                      backgroundColor: 'rgba(7,7,7,0.5)',
-                      border: '1px solid rgba(243,234,217,0.15)',
+                      backgroundColor: inkAlpha(0.5),
+                      border: `1px solid ${creamAlpha(0.15)}`,
                       backdropFilter: 'blur(10px)',
                     }}
                   >
@@ -525,7 +529,7 @@ export default function CustomerDashboard() {
               <div
                 className="hidden sm:flex absolute -bottom-6 -right-2 items-center gap-3 rounded-2xl px-4 py-3 max-w-[200px] z-10"
                 style={{
-                  backgroundColor: 'rgba(7,7,7,0.9)',
+                  backgroundColor: inkAlpha(0.9),
                   border: '1px solid rgba(217,163,95,0.3)',
                   backdropFilter: 'blur(12px)',
                   boxShadow: '0 10px 30px -8px rgba(0,0,0,0.6)',
@@ -539,7 +543,7 @@ export default function CustomerDashboard() {
                   />
                 </div>
                 <div className="min-w-0">
-                  <p className="text-[11px] font-light truncate" style={{ color: 'rgba(243,234,217,0.6)' }}>
+                  <p className="text-[11px] font-light truncate" style={{ color: creamAlpha(0.6) }}>
                     Rasa autentik, siap disantap
                   </p>
                   <p className="text-xs font-semibold" style={{ color: GOLD }}>
@@ -586,7 +590,7 @@ export default function CustomerDashboard() {
           {bestSellers.length > 0 && (
             <div
               className="relative overflow-hidden rounded-3xl px-5 sm:px-8 py-8 sm:py-10"
-              style={{ backgroundColor: 'rgba(243,234,217,0.03)', border: '1px solid rgba(243,234,217,0.08)' }}
+              style={{ backgroundColor: creamAlpha(0.03), border: `1px solid ${creamAlpha(0.08)}` }}
             >
               <div
                 className="absolute -bottom-20 -left-20 w-64 h-64 rounded-full pointer-events-none"
@@ -607,7 +611,7 @@ export default function CustomerDashboard() {
                 <a
                   href="#menu"
                   className="hidden sm:inline-flex items-center gap-1 text-sm flex-shrink-0 font-light transition-colors hover:text-[#D9A35F]"
-                  style={{ color: 'rgba(243,234,217,0.7)' }}
+                  style={{ color: creamAlpha(0.7) }}
                 >
                   Lihat Semua Menu <ArrowUpRight size={14} />
                 </a>
@@ -617,7 +621,7 @@ export default function CustomerDashboard() {
                 {bestSellers.map((product) => {
                   const quantity = cart[product.id]?.quantity ?? 0;
                   return (
-                    <div key={product.id} className="group relative rounded-2xl overflow-hidden" style={{ border: '1px solid rgba(243,234,217,0.1)' }}>
+                    <div key={product.id} className="group relative rounded-2xl overflow-hidden" style={{ border: `1px solid ${creamAlpha(0.1)}` }}>
                       <div className="relative aspect-[4/3] overflow-hidden">
                         <img
                           src={product.image}
@@ -640,7 +644,7 @@ export default function CustomerDashboard() {
                           <Plus size={15} strokeWidth={2.5} />
                         </button>
                       </div>
-                      <div className="p-3" style={{ backgroundColor: 'rgba(243,234,217,0.04)' }}>
+                      <div className="p-3" style={{ backgroundColor: creamAlpha(0.04) }}>
                         <p className="text-sm line-clamp-1 font-light" style={{ color: CREAM }}>
                           {product.name}
                         </p>
@@ -671,7 +675,7 @@ export default function CustomerDashboard() {
               className="absolute inset-0"
               style={{
                 background:
-                  'linear-gradient(90deg, rgba(7,7,7,0.92) 0%, rgba(7,7,7,0.55) 45%, rgba(7,7,7,0.25) 100%)',
+                  `linear-gradient(90deg, ${inkAlpha(0.92)} 0%, ${inkAlpha(0.55)} 45%, ${inkAlpha(0.25)} 100%)`,
               }}
             />
             <div
@@ -711,7 +715,7 @@ export default function CustomerDashboard() {
                   Rasa Nusantara
                 </span>
               </h2>
-              <p className="text-sm mt-3 font-light leading-relaxed" style={{ color: 'rgba(243,234,217,0.65)' }}>
+              <p className="text-sm mt-3 font-light leading-relaxed" style={{ color: creamAlpha(0.65) }}>
                 Dari rempah pilihan hingga teknik memasak turun-temurun, jelajahi menu yang kami
                 siapkan dengan penuh dedikasi untukmu.
               </p>
@@ -743,7 +747,7 @@ export default function CustomerDashboard() {
                     style={
                       active
                         ? { background: GRADIENT, color: BLACK, boxShadow: '0 0 16px rgba(217,163,95,0.25)' }
-                        : { backgroundColor: 'rgba(243,234,217,0.05)', color: 'rgba(243,234,217,0.6)', border: '1px solid rgba(243,234,217,0.12)' }
+                        : { backgroundColor: creamAlpha(0.05), color: creamAlpha(0.6), border: `1px solid ${creamAlpha(0.12)}` }
                     }
                   >
                     {CATEGORY_LABELS[tabKey]}
@@ -752,14 +756,14 @@ export default function CustomerDashboard() {
               })}
             </div>
             <div className="relative sm:ml-auto sm:w-56">
-              <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2" style={{ color: 'rgba(243,234,217,0.4)' }} />
+              <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2" style={{ color: creamAlpha(0.4) }} />
               <input
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="Cari menu..."
                 className="w-full pl-8 pr-3 py-2 rounded-full text-sm outline-none font-light transition-colors duration-300"
                 style={{
-                  backgroundColor: '#121212',
+                  backgroundColor: inkAlpha(0.9),
                   border: '1px solid rgba(217,163,95,0.2)',
                   color: CREAM,
                 }}
@@ -770,7 +774,7 @@ export default function CustomerDashboard() {
           </div>
 
           {filteredProducts.length === 0 ? (
-            <div className="flex flex-col items-center justify-center py-16" style={{ color: 'rgba(243,234,217,0.4)' }}>
+            <div className="flex flex-col items-center justify-center py-16" style={{ color: creamAlpha(0.4) }}>
               <p className="text-sm font-light">Menu tidak ditemukan.</p>
             </div>
           ) : (
@@ -797,7 +801,7 @@ export default function CustomerDashboard() {
               <button
                 onClick={() => setShowAllOrders((v) => !v)}
                 className="flex items-center gap-1 text-xs font-light transition-colors hover:text-[#D9A35F]"
-                style={{ color: 'rgba(243,234,217,0.55)' }}
+                style={{ color: creamAlpha(0.55) }}
               >
                 {showAllOrders ? 'Tampilkan lebih sedikit' : `Lihat semua (${myOrders.length})`}
                 <ChevronDown
@@ -810,7 +814,7 @@ export default function CustomerDashboard() {
           {myOrders.length === 0 ? (
             <div
               className="rounded-2xl py-10 flex flex-col items-center justify-center"
-              style={{ backgroundColor: 'rgba(243,234,217,0.03)', border: '1px solid rgba(243,234,217,0.1)', color: 'rgba(243,234,217,0.4)' }}
+              style={{ backgroundColor: creamAlpha(0.03), border: `1px solid ${creamAlpha(0.1)}`, color: creamAlpha(0.4) }}
             >
               <Clock3 size={28} className="mb-2 opacity-40" />
               <p className="text-sm font-light">Belum ada riwayat pesanan.</p>
@@ -828,7 +832,7 @@ export default function CustomerDashboard() {
                   <div
                     key={order.id}
                     className="rounded-2xl px-4 py-3.5"
-                    style={{ backgroundColor: 'rgba(243,234,217,0.03)', border: '1px solid rgba(243,234,217,0.1)' }}
+                    style={{ backgroundColor: creamAlpha(0.03), border: `1px solid ${creamAlpha(0.1)}` }}
                   >
                     <div className="flex items-center gap-4">
                       <div
@@ -841,7 +845,7 @@ export default function CustomerDashboard() {
                         <p className="text-sm font-medium truncate" style={{ color: CREAM }}>
                           {order.items.map((i) => `${i.name} x${i.quantity}`).join(', ')}
                         </p>
-                        <p className="text-xs mt-0.5 font-light" style={{ color: 'rgba(243,234,217,0.45)' }}>
+                        <p className="text-xs mt-0.5 font-light" style={{ color: creamAlpha(0.45) }}>
                           {new Date(order.timestamp).toLocaleString('id-ID', {
                             dateStyle: 'medium',
                             timeStyle: 'short',
@@ -864,9 +868,9 @@ export default function CustomerDashboard() {
                       <button
                         onClick={() => handleDeleteOrder(order.id)}
                         className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-300 hover:bg-white/10"
-                        style={{ color: 'rgba(243,234,217,0.35)' }}
+                        style={{ color: creamAlpha(0.35) }}
                         onMouseEnter={(e) => (e.currentTarget.style.color = '#E8836C')}
-                        onMouseLeave={(e) => (e.currentTarget.style.color = 'rgba(243,234,217,0.35)')}
+                        onMouseLeave={(e) => (e.currentTarget.style.color = creamAlpha(0.35))}
                         aria-label="Hapus riwayat pesanan ini"
                       >
                         <Trash2 size={14} />
@@ -881,19 +885,19 @@ export default function CustomerDashboard() {
                             <span
                               className="w-2 h-2 rounded-full flex-shrink-0 transition-colors duration-500"
                               style={{
-                                backgroundColor: idx <= stepIndex ? GOLD : 'rgba(243,234,217,0.15)',
+                                backgroundColor: idx <= stepIndex ? GOLD : creamAlpha(0.15),
                                 boxShadow: idx === stepIndex ? '0 0 8px rgba(217,163,95,0.6)' : 'none',
                               }}
                             />
                             {idx < ORDER_STATUS_FLOW.length - 1 && (
                               <span
                                 className="h-px flex-1 mx-1 transition-colors duration-500"
-                                style={{ backgroundColor: idx < stepIndex ? GOLD : 'rgba(243,234,217,0.12)' }}
+                                style={{ backgroundColor: idx < stepIndex ? GOLD : creamAlpha(0.12) }}
                               />
                             )}
                           </div>
                         ))}
-                        <span className="text-[10px] font-light ml-2 flex-shrink-0" style={{ color: 'rgba(243,234,217,0.4)' }}>
+                        <span className="text-[10px] font-light ml-2 flex-shrink-0" style={{ color: creamAlpha(0.4) }}>
                           {formatRelativeTime(order.statusUpdatedAt, nowTick)}
                         </span>
                       </div>
@@ -905,8 +909,8 @@ export default function CustomerDashboard() {
                         {itemsWithNotes.map((item) => (
                           <div key={item.productId} className="flex items-start gap-1.5">
                             <MessageSquareText size={11} className="flex-shrink-0 mt-0.5" style={{ color: GOLD, opacity: 0.75 }} />
-                            <span className="text-[11px] font-light italic" style={{ color: 'rgba(243,234,217,0.5)' }}>
-                              <span style={{ color: 'rgba(243,234,217,0.7)', fontStyle: 'normal' }}>{item.name}:</span> {item.note}
+                            <span className="text-[11px] font-light italic" style={{ color: creamAlpha(0.5) }}>
+                              <span style={{ color: creamAlpha(0.7), fontStyle: 'normal' }}>{item.name}:</span> {item.note}
                             </span>
                           </div>
                         ))}
@@ -928,7 +932,7 @@ export default function CustomerDashboard() {
             <Link
               to="/promo"
               className="flex items-center gap-1 text-xs font-light transition-colors hover:text-[#D9A35F]"
-              style={{ color: 'rgba(243,234,217,0.6)' }}
+              style={{ color: creamAlpha(0.6) }}
             >
               Lihat Semua Promo <ArrowUpRight size={12} />
             </Link>
@@ -948,7 +952,7 @@ export default function CustomerDashboard() {
           onClick={() => setIsCartOpen(true)}
           className="fixed bottom-5 left-1/2 -translate-x-1/2 z-30 flex items-center gap-3 pl-4 pr-2 py-2 rounded-full shadow-2xl transition-all duration-500 hover:scale-[1.02]"
           style={{
-            backgroundColor: 'rgba(7,7,7,0.85)',
+            backgroundColor: inkAlpha(0.85),
             backdropFilter: 'blur(14px)',
             border: '1px solid rgba(217,163,95,0.3)',
             boxShadow: '0 10px 40px -10px rgba(0,0,0,0.6), 0 0 24px rgba(217,163,95,0.12)',
@@ -1016,23 +1020,25 @@ function StatCard({
   value: string;
   sub?: string;
 }) {
+  const { colors } = useTheme();
+  const { cream: CREAM, creamAlpha } = colors;
   return (
     <div
       className="rounded-2xl p-4 flex items-start gap-3"
-      style={{ backgroundColor: 'rgba(243,234,217,0.03)', border: '1px solid rgba(243,234,217,0.1)' }}
+      style={{ backgroundColor: creamAlpha(0.03), border: `1px solid ${creamAlpha(0.1)}` }}
     >
       <div className="w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0" style={{ backgroundColor: iconBg }}>
         {icon}
       </div>
       <div className="min-w-0">
-        <p className="text-xs font-light" style={{ color: 'rgba(243,234,217,0.5)' }}>
+        <p className="text-xs font-light" style={{ color: creamAlpha(0.5) }}>
           {label}
         </p>
-        <p className="text-base sm:text-lg font-semibold leading-tight truncate" style={{ color: '#F3EAD9' }}>
+        <p className="text-base sm:text-lg font-semibold leading-tight truncate" style={{ color: CREAM }}>
           {value}
         </p>
         {sub && (
-          <p className="text-[11px] mt-0.5 font-light" style={{ color: 'rgba(243,234,217,0.4)' }}>
+          <p className="text-[11px] mt-0.5 font-light" style={{ color: creamAlpha(0.4) }}>
             {sub}
           </p>
         )}

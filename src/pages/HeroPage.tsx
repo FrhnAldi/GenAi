@@ -4,6 +4,7 @@ import { ArrowUpRight, ChefHat, Flame, Leaf, MessageCircleHeart, Quote, Soup, St
 import SiteNavbar from '../components/site/SiteNavbar';
 import SiteFooter from '../components/site/SiteFooter';
 import GlobalStyles from '../components/site/GlobalStyles';
+import { useTheme } from '../context/ThemeContext';
 
 /* ------------------------------------------------------------------ */
 /* Data                                                                 */
@@ -81,6 +82,7 @@ const TESTIMONIALS = [
 
 export default function HeroPage() {
   const [activeCard, setActiveCard] = useState(0);
+  const { colors } = useTheme();
 
   useEffect(() => {
     const id = setInterval(() => setActiveCard((prev) => (prev + 1) % HIGHLIGHT_CARDS.length), 3500);
@@ -90,7 +92,7 @@ export default function HeroPage() {
   return (
     <div
       className="relative w-full overflow-hidden"
-      style={{ fontFamily: 'Inter, sans-serif', backgroundColor: '#15100C' }}
+      style={{ fontFamily: 'Inter, sans-serif', backgroundColor: colors.ink }}
     >
       <GlobalStyles />
 
@@ -110,8 +112,7 @@ export default function HeroPage() {
         <div
           className="absolute inset-0"
           style={{
-            background:
-              'linear-gradient(180deg, rgba(21,16,12,0.88) 0%, rgba(21,16,12,0.72) 35%, rgba(21,16,12,0.85) 75%, #15100C 100%)',
+            background: `linear-gradient(180deg, ${colors.inkAlpha(0.88)} 0%, ${colors.inkAlpha(0.72)} 35%, ${colors.inkAlpha(0.85)} 75%, ${colors.ink} 100%)`,
           }}
         />
         {/* grain texture */}
@@ -136,7 +137,7 @@ export default function HeroPage() {
               fontFamily: 'DM Sans, sans-serif',
               fontWeight: 400,
               letterSpacing: '-0.05em',
-              color: '#F3EAD9',
+              color: colors.cream,
             }}
           >
             <span
@@ -166,7 +167,7 @@ export default function HeroPage() {
                 src="https://images.unsplash.com/photo-1512058564366-18510be2db19?w=300&h=300&fit=crop&auto=format"
                 alt="Hidangan RasaNusa"
                 className="hidden sm:inline-block align-middle ml-2 lg:ml-4 rounded-full object-cover animate-scale-in delay-1000"
-                style={{ height: 'clamp(60px, 10vw, 130px)', width: 'clamp(60px, 10vw, 130px)', border: '2px solid rgba(243,234,217,0.4)' }}
+                style={{ height: 'clamp(60px, 10vw, 130px)', width: 'clamp(60px, 10vw, 130px)', border: `2px solid ${colors.creamAlpha(0.4)}` }}
               />
             </span>
           </h1>
@@ -174,9 +175,9 @@ export default function HeroPage() {
           {/* rating badge */}
           <div
             className="flex items-center gap-1.5 mt-4 sm:mt-6 animate-fade-up delay-500"
-            style={{ color: '#D9A441' }}
+            style={{ color: colors.accent }}
           >
-            <Star size={14} fill="#D9A441" />
+            <Star size={14} fill={colors.accent} />
             <span className="text-sm" style={{ fontFamily: 'Inter, sans-serif' }}>
               4.8 dari 1.240 ulasan pelanggan
             </span>
@@ -186,8 +187,8 @@ export default function HeroPage() {
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5 sm:gap-8 lg:gap-[50px] mt-8 sm:mt-12 lg:mt-[60px] animate-fade-up delay-600">
             <Link
               to="/menu"
-              className="group flex items-center justify-center gap-2 rounded-md bg-black text-white w-full sm:w-[240px] md:w-[260px] lg:w-[280px] h-14 sm:h-16 lg:h-[68px] transition-transform hover:scale-[1.02]"
-              style={{ fontFamily: 'Inter, sans-serif', fontWeight: 500, letterSpacing: '-0.03em' }}
+              className="group flex items-center justify-center gap-2 rounded-md w-full sm:w-[240px] md:w-[260px] lg:w-[280px] h-14 sm:h-16 lg:h-[68px] transition-transform hover:scale-[1.02]"
+              style={{ fontFamily: 'Inter, sans-serif', fontWeight: 500, letterSpacing: '-0.03em', backgroundColor: colors.cream, color: colors.ink }}
             >
               <span className="text-base sm:text-lg lg:text-xl">Lihat Menu</span>
               <ArrowUpRight
@@ -196,14 +197,14 @@ export default function HeroPage() {
               />
             </Link>
             <p
-              className="text-white max-w-[320px]"
+              className="max-w-[320px]"
               style={{
                 fontFamily: 'Inter, sans-serif',
                 fontWeight: 400,
                 letterSpacing: '-0.03em',
                 lineHeight: 1.45,
                 fontSize: 'clamp(14px, 1.6vw, 18px)',
-                color: 'rgba(243,234,217,0.75)',
+                color: colors.creamAlpha(0.75),
               }}
             >
               Racikan resep rumahan nusantara, dimasak segar setiap hari dari dapur kami untuk Anda.
@@ -222,7 +223,7 @@ export default function HeroPage() {
             bottom: '6%',
             right: 'clamp(2%, 4vw, 6%)',
             boxShadow: '0 40px 80px -20px rgba(0,0,0,0.6)',
-            border: '1px solid rgba(243,234,217,0.15)',
+            border: `1px solid ${colors.creamAlpha(0.15)}`,
           }}
         />
       </div>
@@ -311,7 +312,7 @@ export default function HeroPage() {
         </div>
 
         {/* Panel 3 */}
-        <div className="relative flex items-center gap-5 sm:gap-8 px-6 sm:px-10 py-10 animate-fade-up delay-1100" style={{ backgroundColor: '#15100C' }}>
+        <div className="relative flex items-center gap-5 sm:gap-8 px-6 sm:px-10 py-10 animate-fade-up delay-1100" style={{ backgroundColor: colors.ink }}>
           <img
             src="https://images.unsplash.com/photo-1529563021893-cc83c992d75d?w=500&h=340&fit=crop&auto=format"
             alt="Sate Ayam Madura"
@@ -325,7 +326,7 @@ export default function HeroPage() {
                 fontWeight: 400,
                 fontSize: 'clamp(26px, 3vw, 35px)',
                 letterSpacing: '-0.05em',
-                color: '#F3EAD9',
+                color: colors.cream,
               }}
             >
               +14K
@@ -335,7 +336,7 @@ export default function HeroPage() {
                 fontFamily: 'Inter, sans-serif',
                 fontSize: 'clamp(13px, 1.4vw, 17px)',
                 lineHeight: 1.2,
-                color: 'rgba(243,234,217,0.6)',
+                color: colors.creamAlpha(0.6),
               }}
             >
               Pelanggan sudah menikmati sajian nusantara kami
@@ -365,6 +366,7 @@ function Word({
   delay: string;
   dim?: boolean;
 }) {
+  const { colors } = useTheme();
   return (
     <span className="inline-block overflow-hidden align-bottom">
       <span
@@ -372,7 +374,7 @@ function Word({
         style={{
           animation: `wordReveal 0.7s cubic-bezier(0.16,1,0.3,1) both`,
           animationDelay: delay,
-          color: dim ? 'rgba(243,234,217,0.4)' : '#F3EAD9',
+          color: dim ? colors.creamAlpha(0.4) : colors.cream,
         }}
       >
         {children}
@@ -387,12 +389,13 @@ function Word({
 
 function TestimonialSection() {
   const loop = [...TESTIMONIALS, ...TESTIMONIALS];
+  const { colors } = useTheme();
 
   return (
     <section
       id="testimoni"
       className="relative py-16 sm:py-20 lg:py-24 overflow-hidden"
-      style={{ backgroundColor: '#15100C' }}
+      style={{ backgroundColor: colors.ink }}
     >
       {/* ambient glow */}
       <div
@@ -404,10 +407,10 @@ function TestimonialSection() {
 
       <div className="relative px-5 sm:px-8 lg:px-10 mb-10 sm:mb-14">
         <div className="flex items-center gap-2 mb-3 animate-fade-up">
-          <MessageCircleHeart size={18} color="#D9A441" />
+          <MessageCircleHeart size={18} color={colors.accent} />
           <span
             className="uppercase text-xs sm:text-sm"
-            style={{ color: '#D9A441', letterSpacing: '0.18em', fontFamily: 'Inter, sans-serif' }}
+            style={{ color: colors.accent, letterSpacing: '0.18em', fontFamily: 'Inter, sans-serif' }}
           >
             Kata Pelanggan
           </span>
@@ -420,7 +423,7 @@ function TestimonialSection() {
             fontSize: 'clamp(30px, 5vw, 52px)',
             lineHeight: 1.05,
             letterSpacing: '-0.04em',
-            color: '#F3EAD9',
+            color: colors.cream,
           }}
         >
           Cerita hangat dari meja makan pelanggan kami
@@ -463,24 +466,25 @@ function TestimonialCard({
   testimonial: (typeof TESTIMONIALS)[number];
   compact?: boolean;
 }) {
+  const { colors } = useTheme();
   return (
     <div
       className="flex-shrink-0 rounded-2xl p-5 sm:p-6 flex flex-col gap-4"
       style={{
         width: compact ? 300 : 340,
-        backgroundColor: 'rgba(243,234,217,0.05)',
-        border: '1px solid rgba(243,234,217,0.1)',
+        backgroundColor: colors.creamAlpha(0.05),
+        border: `1px solid ${colors.creamAlpha(0.1)}`,
         backdropFilter: 'blur(4px)',
       }}
     >
-      <Quote size={22} color="#D9A441" style={{ opacity: 0.7 }} />
+      <Quote size={22} color={colors.accent} style={{ opacity: 0.7 }} />
       <p
         style={{
           fontFamily: 'Inter, sans-serif',
           fontSize: 15,
           lineHeight: 1.5,
           letterSpacing: '-0.02em',
-          color: 'rgba(243,234,217,0.85)',
+          color: colors.creamAlpha(0.85),
         }}
       >
         {testimonial.quote}
@@ -490,13 +494,13 @@ function TestimonialCard({
           src={testimonial.avatar}
           alt={testimonial.name}
           className="w-10 h-10 rounded-full object-cover"
-          style={{ border: '1px solid rgba(243,234,217,0.2)' }}
+          style={{ border: `1px solid ${colors.creamAlpha(0.2)}` }}
         />
         <div>
-          <p style={{ color: '#F3EAD9', fontSize: 14, fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>
+          <p style={{ color: colors.cream, fontSize: 14, fontFamily: 'Inter, sans-serif', fontWeight: 500 }}>
             {testimonial.name}
           </p>
-          <p style={{ color: 'rgba(243,234,217,0.5)', fontSize: 12, fontFamily: 'Inter, sans-serif' }}>
+          <p style={{ color: colors.creamAlpha(0.5), fontSize: 12, fontFamily: 'Inter, sans-serif' }}>
             {testimonial.role}
           </p>
         </div>
@@ -505,8 +509,8 @@ function TestimonialCard({
             <Star
               key={i}
               size={12}
-              fill={i < testimonial.rating ? '#D9A441' : 'none'}
-              color={i < testimonial.rating ? '#D9A441' : 'rgba(243,234,217,0.25)'}
+              fill={i < testimonial.rating ? colors.accent : 'none'}
+              color={i < testimonial.rating ? colors.accent : colors.creamAlpha(0.25)}
             />
           ))}
         </div>
@@ -516,6 +520,7 @@ function TestimonialCard({
 }
 
 function Stat({ value, label }: { value: string; label: string }) {
+  const { colors } = useTheme();
   return (
     <div className="text-center sm:text-left">
       <p
@@ -524,7 +529,7 @@ function Stat({ value, label }: { value: string; label: string }) {
           fontWeight: 400,
           fontSize: 'clamp(28px, 4vw, 40px)',
           letterSpacing: '-0.04em',
-          color: '#F3EAD9',
+          color: colors.cream,
         }}
       >
         {value}
@@ -533,7 +538,7 @@ function Stat({ value, label }: { value: string; label: string }) {
         style={{
           fontFamily: 'Inter, sans-serif',
           fontSize: 13,
-          color: 'rgba(243,234,217,0.55)',
+          color: colors.creamAlpha(0.55),
           marginTop: 4,
         }}
       >

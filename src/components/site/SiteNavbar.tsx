@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Menu, Search, ShoppingBag, User, X } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
+import { useTheme } from '../../context/ThemeContext';
+import ThemeToggle from './ThemeToggle';
 
 export const NAV_LINKS = [
   { label: 'Beranda', to: '/' },
@@ -12,6 +14,7 @@ export const NAV_LINKS = [
 
 export default function SiteNavbar({ variant = 'dark' }: { variant?: 'dark' | 'light' }) {
   const { user } = useAuth();
+  const { mode } = useTheme();
   const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
@@ -24,10 +27,14 @@ export default function SiteNavbar({ variant = 'dark' }: { variant?: 'dark' | 'l
   const ctaLabel = user ? 'Ke Dashboard' : 'Pesan? Silahkan Login';
   const ctaTarget = user ? (user.role === 'admin' ? '/admin' : '/dashboard') : '/login';
 
-  const textColor = variant === 'dark' ? '#F3EAD9' : '#15100C';
-  const textMuted = variant === 'dark' ? 'text-white/90 hover:text-white' : 'text-black/80 hover:text-black';
-  const pillBg = variant === 'dark' ? 'rgba(243,234,217,0.12)' : 'rgba(21,16,12,0.08)';
-  const pillBorder = variant === 'dark' ? 'rgba(243,234,217,0.3)' : 'rgba(21,16,12,0.2)';
+  // The navbar sits on top of dark hero sections normally; in light mode we flip
+  // its own text colors so it stays readable against the now-light background.
+  const effectiveVariant: 'dark' | 'light' = mode === 'light' ? 'light' : variant;
+
+  const textColor = effectiveVariant === 'dark' ? '#F3EAD9' : '#15100C';
+  const textMuted = effectiveVariant === 'dark' ? 'text-white/90 hover:text-white' : 'text-black/80 hover:text-black';
+  const pillBg = effectiveVariant === 'dark' ? 'rgba(243,234,217,0.12)' : 'rgba(21,16,12,0.08)';
+  const pillBorder = effectiveVariant === 'dark' ? 'rgba(243,234,217,0.3)' : 'rgba(21,16,12,0.2)';
 
   return (
     <>
@@ -61,6 +68,7 @@ export default function SiteNavbar({ variant = 'dark' }: { variant?: 'dark' | 'l
           </div>
 
           <div className="flex items-center gap-3 sm:gap-4 animate-slide-right delay-300">
+            <ThemeToggle />
             <button
               aria-label="Cari menu"
               className={`transition-colors hidden sm:inline-flex ${textMuted}`}
@@ -108,6 +116,9 @@ export default function SiteNavbar({ variant = 'dark' }: { variant?: 'dark' | 'l
           className="fixed inset-0 z-40 flex flex-col items-center justify-center gap-8 animate-fade-in"
           style={{ background: 'rgba(21,16,12,0.97)' }}
         >
+          <div className="absolute top-5 right-5">
+            <ThemeToggle />
+          </div>
           {NAV_LINKS.map((link) => (
             <Link
               key={link.label}

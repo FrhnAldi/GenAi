@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { AlertCircle, Check, Copy, Tag, X } from 'lucide-react';
 import { PROMOS } from '../../data/promos';
+import { useTheme } from '../../context/ThemeContext';
 
 interface Props {
   activeCode?: string | null;
@@ -10,6 +11,8 @@ interface Props {
 }
 
 export default function PromoCarousel({ activeCode, error, onApply, onRemove }: Props) {
+  const { colors } = useTheme();
+  const { ink: BLACK, cream: CREAM, creamAlpha, inkAlpha } = colors;
   const [active, setActive] = useState(0);
   const [copiedCode, setCopiedCode] = useState<string | null>(null);
 
@@ -54,7 +57,7 @@ export default function PromoCarousel({ activeCode, error, onApply, onRemove }: 
               <div
                 className="absolute inset-0"
                 style={{
-                  background: `linear-gradient(100deg, rgba(7,7,7,0.94) 28%, rgba(7,7,7,0.55) 62%, ${promo.accent}22 100%)`,
+                  background: `linear-gradient(100deg, ${inkAlpha(0.94)} 28%, ${inkAlpha(0.55)} 62%, ${promo.accent}22 100%)`,
                 }}
               />
               <div className="relative h-full flex items-center gap-4 px-5 sm:px-6">
@@ -71,14 +74,14 @@ export default function PromoCarousel({ activeCode, error, onApply, onRemove }: 
                   >
                     {promo.tag}
                   </span>
-                  <p className="text-sm sm:text-base font-bold leading-snug" style={{ color: '#F3EAD9' }}>
+                  <p className="text-sm sm:text-base font-bold leading-snug" style={{ color: CREAM }}>
                     {promo.title}
                   </p>
-                  <p className="text-xs sm:text-sm mt-0.5 line-clamp-1" style={{ color: 'rgba(243,234,217,0.65)' }}>
+                  <p className="text-xs sm:text-sm mt-0.5 line-clamp-1" style={{ color: creamAlpha(0.65) }}>
                     {promo.description}
                   </p>
                   {requirementText && (
-                    <p className="text-[10px] mt-1 line-clamp-1" style={{ color: 'rgba(243,234,217,0.45)' }}>
+                    <p className="text-[10px] mt-1 line-clamp-1" style={{ color: creamAlpha(0.45) }}>
                       Syarat: {requirementText}
                     </p>
                   )}
@@ -89,7 +92,7 @@ export default function PromoCarousel({ activeCode, error, onApply, onRemove }: 
                   style={
                     isApplied
                       ? { backgroundColor: `${promo.accent}2a`, border: `1px solid ${promo.accent}`, color: promo.accent }
-                      : { backgroundColor: promo.accent, color: '#070707' }
+                      : { backgroundColor: promo.accent, color: BLACK }
                   }
                 >
                   {isApplied ? (
@@ -117,7 +120,7 @@ export default function PromoCarousel({ activeCode, error, onApply, onRemove }: 
                 width: i === active ? 16 : 6,
                 height: 6,
                 borderRadius: 999,
-                backgroundColor: i === active ? '#D9A35F' : 'rgba(255,255,255,0.4)',
+                backgroundColor: i === active ? '#D9A35F' : creamAlpha(0.4),
                 transition: 'all 300ms ease',
               }}
             />
@@ -132,7 +135,7 @@ export default function PromoCarousel({ activeCode, error, onApply, onRemove }: 
           style={{ backgroundColor: 'rgba(196,67,43,0.12)', border: '1px solid rgba(196,67,43,0.4)' }}
         >
           <AlertCircle size={14} style={{ color: '#E8836C', marginTop: 1, flexShrink: 0 }} />
-          <p className="text-xs font-light leading-relaxed" style={{ color: '#F3EAD9' }}>
+          <p className="text-xs font-light leading-relaxed" style={{ color: CREAM }}>
             {error}
           </p>
         </div>
@@ -146,14 +149,14 @@ export default function PromoCarousel({ activeCode, error, onApply, onRemove }: 
         >
           <div className="flex items-center gap-2 min-w-0">
             <Tag size={14} style={{ color: '#D9A35F' }} />
-            <p className="text-xs font-medium truncate" style={{ color: '#F3EAD9' }}>
+            <p className="text-xs font-medium truncate" style={{ color: CREAM }}>
               Promo <span style={{ color: '#D9A35F', fontFamily: 'monospace' }}>{activeCode}</span> aktif untuk pesanan ini
             </p>
           </div>
           <button
             onClick={onRemove}
             className="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center transition-colors hover:bg-white/10"
-            style={{ color: 'rgba(243,234,217,0.6)' }}
+            style={{ color: creamAlpha(0.6) }}
             aria-label="Hapus promo"
           >
             <X size={13} />
@@ -172,7 +175,7 @@ export default function PromoCarousel({ activeCode, error, onApply, onRemove }: 
               className="flex items-center gap-1 flex-shrink-0 rounded-full pl-3 pr-1 py-1"
               style={{
                 border: `1px dashed ${promo.accent}88`,
-                backgroundColor: isApplied ? `${promo.accent}22` : 'rgba(243,234,217,0.03)',
+                backgroundColor: isApplied ? `${promo.accent}22` : creamAlpha(0.03),
               }}
             >
               <span
@@ -195,7 +198,7 @@ export default function PromoCarousel({ activeCode, error, onApply, onRemove }: 
                 style={
                   isApplied
                     ? { color: promo.accent, backgroundColor: 'transparent' }
-                    : { backgroundColor: promo.accent, color: '#070707' }
+                    : { backgroundColor: promo.accent, color: BLACK }
                 }
               >
                 {isApplied ? 'Dipakai' : 'Pakai'}

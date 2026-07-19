@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { CreditCard, MessageSquarePlus, Minus, Plus, QrCode, ShoppingBag, Tag, Trash2, Wallet, X } from 'lucide-react';
 import type { OrderType, PaymentMethod, Product } from '../../types/pos';
 import { formatIDR } from '../../data/products';
+import { useTheme } from '../../context/ThemeContext';
 
 interface CartLine {
   product: Product;
@@ -32,11 +33,9 @@ const PAYMENT_OPTIONS: { key: PaymentMethod; label: string; icon: typeof QrCode 
   { key: 'tunai', label: 'Tunai di Kasir', icon: CreditCard },
 ];
 
-// Palette lifted from the Basilico luxury design system: near-black stage,
-// dual gold / burnt-orange accent, warm cream & gray text.
-const BLACK = '#070707';
-const CREAM = '#F3EAD9';
-const MUTED = 'rgba(243,234,217,0.55)';
+// Palette lifted from the Basilico luxury design system: near-black stage
+// (dark) / near-white stage (light), dual gold / burnt-orange accent, warm
+// cream & gray text. GOLD/BURNT stay constant; BLACK/CREAM/MUTED come from useTheme().
 const GOLD = '#D9A35F';
 const BURNT = '#C97A2B';
 const GRADIENT = `linear-gradient(135deg, ${GOLD}, ${BURNT})`;
@@ -58,6 +57,9 @@ export default function CartDrawer({
   total,
   onConfirm,
 }: Props) {
+  const { colors } = useTheme();
+  const { ink: BLACK, cream: CREAM, creamAlpha, inkAlpha } = colors;
+  const MUTED = creamAlpha(0.55);
   const [orderType, setOrderType] = useState<OrderType>('dine-in');
   const [tableNumber, setTableNumber] = useState('');
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>('qris');
@@ -81,7 +83,7 @@ export default function CartDrawer({
         onClick={onClose}
         className="fixed inset-0 z-40"
         style={{
-          backgroundColor: 'rgba(4,4,4,0.72)',
+          backgroundColor: inkAlpha(0.72),
           backdropFilter: 'blur(3px)',
           opacity: open ? 1 : 0,
           pointerEvents: open ? 'auto' : 'none',
@@ -93,7 +95,7 @@ export default function CartDrawer({
       <div
         className="fixed top-0 right-0 h-full w-full sm:w-[420px] z-50 flex flex-col overflow-hidden"
         style={{
-          backgroundColor: `${BLACK}f2`,
+          backgroundColor: inkAlpha(0.95),
           backdropFilter: 'blur(20px)',
           borderLeft: '1px solid rgba(217,163,95,0.18)',
           boxShadow: open ? '-40px 0 80px -30px rgba(0,0,0,0.7), 0 0 60px rgba(217,163,95,0.06)' : 'none',
@@ -113,7 +115,7 @@ export default function CartDrawer({
 
         <div
           className="relative px-5 sm:px-6 py-5 flex items-center gap-3 flex-shrink-0"
-          style={{ borderBottom: '1px solid rgba(243,234,217,0.08)' }}
+          style={{ borderBottom: `1px solid ${creamAlpha(0.08)}` }}
         >
           <div
             className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0"
@@ -172,8 +174,8 @@ export default function CartDrawer({
                   key={product.id}
                   className="rounded-2xl px-3 py-2.5"
                   style={{
-                    backgroundColor: 'rgba(243,234,217,0.03)',
-                    border: '1px solid rgba(243,234,217,0.08)',
+                    backgroundColor: creamAlpha(0.03),
+                    border: `1px solid ${creamAlpha(0.08)}`,
                     backdropFilter: 'blur(6px)',
                   }}
                 >
@@ -182,7 +184,7 @@ export default function CartDrawer({
                       src={product.image}
                       alt={product.name}
                       className="w-12 h-12 rounded-xl object-cover flex-shrink-0"
-                      style={{ backgroundColor: 'rgba(243,234,217,0.06)' }}
+                      style={{ backgroundColor: creamAlpha(0.06) }}
                     />
                     <div className="flex-1 min-w-0">
                       <p className="text-sm truncate" style={{ color: CREAM, fontFamily: 'Inter, sans-serif' }}>
@@ -220,9 +222,9 @@ export default function CartDrawer({
                     <button
                       onClick={() => onRemove(product.id)}
                       className="flex-shrink-0 transition-colors duration-300"
-                      style={{ color: 'rgba(243,234,217,0.3)' }}
+                      style={{ color: creamAlpha(0.3) }}
                       onMouseEnter={(e) => (e.currentTarget.style.color = '#E8836C')}
-                      onMouseLeave={(e) => (e.currentTarget.style.color = 'rgba(243,234,217,0.3)')}
+                      onMouseLeave={(e) => (e.currentTarget.style.color = creamAlpha(0.3))}
                       aria-label={`Hapus ${product.name}`}
                     >
                       <Trash2 size={14} />
@@ -231,7 +233,7 @@ export default function CartDrawer({
 
                   {/* Special request for this specific item — e.g. "tidak pedas", "tanpa es". */}
                   <div className="flex items-center gap-2 mt-2 pl-1">
-                    <MessageSquarePlus size={13} className="flex-shrink-0" style={{ color: 'rgba(243,234,217,0.35)' }} />
+                    <MessageSquarePlus size={13} className="flex-shrink-0" style={{ color: creamAlpha(0.35) }} />
                     <input
                       value={note}
                       onChange={(e) => onNoteChange(product.id, e.target.value)}
@@ -274,7 +276,7 @@ export default function CartDrawer({
                             : {
                                 backgroundColor: 'transparent',
                                 color: MUTED,
-                                border: '1px solid rgba(243,234,217,0.16)',
+                                border: `1px solid ${creamAlpha(0.16)}`,
                               }
                         }
                       >
@@ -299,7 +301,7 @@ export default function CartDrawer({
                     placeholder="Contoh: 12"
                     className="w-full px-3.5 py-2.5 rounded-xl text-sm outline-none transition-colors duration-300 font-light"
                     style={{
-                      backgroundColor: '#121212',
+                      backgroundColor: inkAlpha(0.9),
                       border: '1px solid rgba(217,163,95,0.2)',
                       color: CREAM,
                       fontFamily: 'Inter, sans-serif',
@@ -333,7 +335,7 @@ export default function CartDrawer({
                                 color: GOLD,
                                 boxShadow: '0 0 16px rgba(217,163,95,0.12)',
                               }
-                            : { backgroundColor: 'transparent', border: '1px solid rgba(243,234,217,0.14)', color: MUTED }
+                            : { backgroundColor: 'transparent', border: `1px solid ${creamAlpha(0.14)}`, color: MUTED }
                         }
                       >
                         <Icon size={16} />
@@ -350,8 +352,8 @@ export default function CartDrawer({
         <div
           className="relative px-5 sm:px-6 py-5 flex flex-col gap-2 flex-shrink-0"
           style={{
-            borderTop: '1px solid rgba(243,234,217,0.08)',
-            backgroundColor: 'rgba(7,7,7,0.6)',
+            borderTop: `1px solid ${creamAlpha(0.08)}`,
+            backgroundColor: inkAlpha(0.6),
             backdropFilter: 'blur(10px)',
           }}
         >
@@ -413,7 +415,7 @@ export default function CartDrawer({
             style={
               canConfirm
                 ? { background: GRADIENT, color: BLACK, boxShadow: '0 8px 30px -8px rgba(217,163,95,0.45)' }
-                : { backgroundColor: 'rgba(243,234,217,0.06)', color: 'rgba(243,234,217,0.3)', cursor: 'not-allowed' }
+                : { backgroundColor: creamAlpha(0.06), color: creamAlpha(0.3), cursor: 'not-allowed' }
             }
           >
             Pesan Sekarang
