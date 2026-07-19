@@ -4,6 +4,7 @@ import { Menu, Search, ShoppingBag, User, X } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 
 export const NAV_LINKS = [
+  { label: 'Beranda', to: '/' },
   { label: 'Tentang', to: '/tentang' },
   { label: 'Menu', to: '/menu' },
   { label: 'Promo', to: '/promo' },

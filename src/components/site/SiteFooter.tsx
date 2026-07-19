@@ -34,9 +34,6 @@ export default function SiteFooter() {
             Navigasi
           </p>
           <div className="flex flex-col gap-2.5">
-            <Link to="/" className="text-sm" style={{ color: 'rgba(243,234,217,0.75)' }}>
-              Beranda
-            </Link>
             {NAV_LINKS.map((link) => (
               <Link key={link.label} to={link.to} className="text-sm" style={{ color: 'rgba(243,234,217,0.75)' }}>
                 {link.label}
